@@ -1,8 +1,55 @@
 # Laravel AdminLTE 4 Boilerplate
 
-Reusable Laravel application boilerplate built with **Laravel 13** and **AdminLTE 4**.
+A reusable Laravel application starter kit built with **Laravel 13**, **AdminLTE 4**, and **Bootstrap 5.3**.
 
-This project provides a foundation for building administrative web applications with authentication, role-based access control (RBAC), and database-driven navigation.
+This repository provides a foundation for building administrative web applications with authentication, role-based access control (RBAC), user management, and reusable administrative modules.
+
+The project is designed to be cloned and customized for multiple Laravel applications.
+
+## Features
+
+### Core Application
+
+- User authentication.
+- User registration and email verification.
+- Password reset and password confirmation.
+- User management.
+- Role-based access control (RBAC).
+- Role and permission management.
+- User profile management.
+- Password and session management.
+- Application settings.
+- Activity logging.
+- Administrative dashboard.
+
+### Administrative Modules
+
+The boilerplate includes reusable administrative modules:
+
+- Projects management.
+- Kanban board.
+- Calendar and events.
+- Chat and messaging.
+- Mailbox.
+- Notifications.
+- File manager.
+
+These modules provide implementation examples that can be adapted to the requirements of individual applications.
+
+### UI Examples
+
+Additional AdminLTE pages are included as UI examples:
+
+- Invoice.
+- Pricing.
+- FAQ.
+- Dashboard variations.
+- Forms and validation.
+- Tables and widgets.
+- UI components and icons.
+- Theme customization.
+
+Some UI examples are demonstration pages rather than complete business modules.
 
 ## Technology Stack
 
@@ -15,59 +62,35 @@ This project provides a foundation for building administrative web applications 
 | Frontend Build | Vite |
 | JavaScript | Vanilla JavaScript |
 | Testing | Pest |
+| Code Formatting | Laravel Pint |
 | AI Development Tools | Laravel Boost |
-
-## Features
-
-### Core Features
-
-- User authentication.
-- User management.
-- Role-based access control (RBAC).
-- Role and permission management.
-- Database-driven navigation menu.
-- User profile management.
-- Application dashboard.
-- Activity logging.
-
-### Application Modules
-
-The project also includes example administrative modules:
-
-- Projects management.
-- Kanban board.
-- Calendar and events.
-- Chat and messaging.
-- Mailbox.
-- Notifications.
-- File manager.
-- Invoice and pricing pages.
-
-These modules provide starting points for application-specific development and customization.
 
 ## Requirements
 
 - PHP 8.3 or newer.
 - Composer 2.
 - Node.js and npm.
-- A supported Laravel database, such as SQLite or MySQL/MariaDB.
+- SQLite, MySQL, or MariaDB.
+- PHP extensions required by Laravel 13 and the installed dependencies.
 
 ## Installation
 
-Clone the repository:
+### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd <project-directory>
+git clone https://github.com/AdeSupriyadi/laravel-adminlte-boilerplate.git
+cd laravel-adminlte-boilerplate
 ```
 
-Install PHP dependencies:
+### 2. Install PHP dependencies
 
 ```bash
 composer install
 ```
 
-Create the environment configuration:
+### 3. Configure environment
+
+Copy the example environment file:
 
 ```bash
 cp .env.example .env
@@ -85,21 +108,27 @@ Generate the application key:
 php artisan key:generate
 ```
 
-Configure the database connection in `.env` before running migrations.
+### 4. Configure the database
 
-Run database migrations:
+Update the database configuration in `.env`.
+
+For SQLite, configure the database connection and ensure the database file exists.
+
+For MySQL or MariaDB, create the database and configure the connection details.
+
+### 5. Run database migrations
 
 ```bash
 php artisan migrate
 ```
 
-Install frontend dependencies:
+### 6. Install frontend dependencies
 
 ```bash
 npm install
 ```
 
-Build frontend assets:
+### 7. Build frontend assets
 
 ```bash
 npm run build
@@ -113,15 +142,21 @@ Start the development environment:
 composer run dev
 ```
 
-Alternatively, start the Laravel server separately:
+Alternatively, start the Laravel development server:
 
 ```bash
 php artisan serve
 ```
 
-## Running Tests
+For frontend development with Vite, use:
 
-Run the test suite:
+```bash
+npm run dev
+```
+
+## Testing
+
+Run the automated test suite:
 
 ```bash
 php artisan test
@@ -129,10 +164,39 @@ php artisan test
 
 ## Code Quality
 
-Format PHP files using Laravel Pint:
+Format PHP source files using Laravel Pint:
 
 ```bash
 vendor/bin/pint
+```
+
+## Project Structure
+
+The project follows Laravel's conventional application structure.
+
+Important directories include:
+
+```text
+app/
+├── Events/
+├── Http/
+│   ├── Controllers/
+│   └── Middleware/
+├── Models/
+├── Notifications/
+├── Policies/
+└── Providers/
+
+database/
+├── factories/
+├── migrations/
+└── seeders/
+
+resources/
+└── views/
+    └── adminlte/
+
+routes/
 ```
 
 ## Laravel Boost
@@ -147,12 +211,25 @@ Project-specific development guidelines and skills are available in:
 
 Laravel Boost MCP configuration is provided through `.mcp.json`.
 
+## Roadmap
+
+Planned improvements include:
+
+- Database-driven navigation management.
+- Permission-aware dynamic sidebar menus.
+- Expanded authorization policies.
+- Reusable application settings.
+- Improved audit logging.
+- Optional API token authentication.
+- Continuous integration and deployment workflows.
+- Expanded automated test coverage.
+
 ## Optional Modules
 
-Optional application capabilities can be developed as independent modules to keep the core boilerplate lightweight.
+Optional capabilities can be developed independently to keep the core boilerplate maintainable and reusable.
 
-See the `modules/` directory for module implementations and development status.
+Optional modules should be documented separately and integrated only when their implementation is ready.
 
 ## License
 
-MIT
+This project is licensed under the MIT License. See the `LICENSE` file for details.

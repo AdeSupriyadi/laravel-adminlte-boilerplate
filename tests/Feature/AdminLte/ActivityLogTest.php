@@ -1,0 +1,74 @@
+<?php
+
+namespace Tests\Feature\AdminLte;
+
+use App\Models\User;
+use ColorlibHQ\AdminLte\Support\ActivityLogger;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Tests\TestCase;
+
+class ActivityLogTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        ActivityLogger::flushTableCache();
+    }
+
+    public function test_guests_are_redirected_from_the_activity_log(): void
+    {
+        $this->get(route('adminlte.activity.index'))
+            ->assertRedirect(route('login'));
+    }
+
+    public function test_users_with_the_view_activity_ability_can_view_the_activity_log(): void
+    {
+        Gate::define('view-activity', fn () => true);
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('adminlte.activity.index'))
+            ->assertOk();
+    }
+
+    public function test_users_without_the_view_activity_ability_are_refused(): void
+    {
+        Gate::define('view-activity', fn () => false);
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('adminlte.activity.index'))
+            ->assertForbidden();
+    }
+
+    public function test_the_logger_never_stores_credentials(): void
+    {
+        $user = User::factory()->create();
+
+        ActivityLogger::log('updated', 'User updated', [
+            'name' => 'New name',
+            'password' => '$2y$12$not-a-real-hash',
+            'remember_token' => 'remember-me',
+        ], $user);
+
+        $properties = json_decode((string) DB::table('activity_log')->latest('id')->value('properties'), true);
+
+        $this->assertSame(['name' => 'New name'], $properties);
+    }
+
+    public function test_the_logger_records_an_activity_row(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+        ActivityLogger::log('test.event', 'Something happened', ['foo' => 'bar']);
+
+        $this->assertDatabaseHas('activity_log', [
+            'user_id' => $user->id,
+            'event' => 'test.event',
+            'description' => 'Something happened',
+        ]);
+    }
+}
